@@ -1,85 +1,70 @@
-import matplotlib.pyplot as plt
+from sklearn import datasets
 import numpy as np
-import os
 import pandas as pd
+import matplotlib.pyplot as plt
+
+wine = datasets.load_wine()
+
+df = pd.DataFrame(wine['data'], columns=wine['feature_names'])
+df['target'] = wine['target']
+df.head()
+
+a = 5
+b = 0
+
+X = wine.data[:, [a, b]]
+y = wine.target
+
+print('클래스 레이블:', np.unique(y))
+print('y의 레이블 카운트 : ', np.bincount(y))
+
+# for i in range(df.shape[0]):
+#     for j in range(i, ):
+#         if i == j or j == 13:
+#             continue
+
+#         X = wine.data[:, [i, j]]
+
+#         markers = ('s', 'x', 'o', '^', 'v')
+#         cmap=('red', 'blue', 'lightgreen', 'gray', 'cyan')
+#         for idx, cl in enumerate(np.unique(y)):
+#             plt.scatter(x=X[y == cl, 0], y=X[y == cl, 1],
+#                             alpha=0.8, c=cmap[idx], marker=markers[idx],
+#                             label=cl, edgecolor='black')
+#         plt.xlabel(wine['feature_names'][i])
+#         plt.ylabel(wine['feature_names'][j])
+#         plt.show()
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+
+sc = StandardScaler()
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y)
+
+print('y의 레이블 카운트 : ', np.bincount(y))
+print('y_train의 레이블 카운트 : ', np.bincount(y_train))
+print('y_test의 레이블 카운트 : ', np.bincount(y_test))
+
+sc.fit(X_train)
+X_train_std = sc.transform(X_train)
+X_test_std = sc.transform(X_test)
+
+from sklearn.linear_model import Perceptron
 
 
-class Perceptron(object):
-    '''
-    (매개변수)
-    eta : float
-        학습률 (0.0과 1.0사이의 float)
-    n_iter : int
-        훈련 데이터셋 반복 횟수
-    random_state : int
-        가중치 무작위 초기화를 위한 난수 생성기 시드
+ppn = Perceptron(eta0=0.1)
+ppn.fit(X_train_std, y_train)
 
-    (속성)
-    w_ : 1d-array
-        학습된 가중치
-    errors_ : list
-        에포크마다 누적된 분류 오류
-    '''
+y_pred = ppn.predict(X_test_std)
+print(f'잘못 분류된 샘플 개수:{(y_test != y_pred).sum()}')
 
-    def __init__(self, eta=0.01, n_iter=50, random_state=1):
-        self.eta = eta
-        self.n_iter = n_iter
-        self.random_state = random_state
+from modules import plot_decision_regions
+X_cobined_std = np.vstack((X_train_std, X_test_std))
+y_combined = np.hstack((y_train, y_test))
 
-    def fit(self, X, y):
-        '''
-        (매개변수)
-        x : n_sample개의 샘플(행)과 n_feature개의 특성(열)으로 이루어진
-        훈련 데이터
-        y: 타깃값 (1차원 배열)
-
-        (return)
-        self: object
-        '''
-        rgen = np.random.RandomState(self.random_state)
-        self.w_ = rgen.normal(loc=0.0, scale=0.01, size=1 + X.shape[1])
-
-        self.errors_ = []
-
-        for _ in range(self.n_iter):
-            errors = 0
-            for xi, target in zip(X, y):
-                update = self.eta * (target - self.predict(xi))
-                self.w_[1:] += update * xi
-                self.w_[0:] += update
-                errors += int(update != 0.0)
-            self.errors_.append(errors)
-        return self
-
-    def net_input(self, X):
-        '''입력 계산'''
-        return np.dot(X, self.w_[1:]) + self.w_[0]
-
-    def predict(self, X):
-        '''단위 계단 함수를 사용하여 클래스 레이블을 반환'''
-        return np.where(self.net_input(X) >= 0.0, 1, -1)
-
-def __main__():
-
-
-    s = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
-
-    df = pd.read_csv(s, header=None, encoding='utf-8')
-
-
-    # setosa와 versicolor를 선택합니다
-    y = df.iloc[0:100, 4].values
-    y = np.where(y == 'Iris-setosa', -1, 1)
-
-    # 꽃받침 길이와 꽃잎 길이를 추출합니다
-    X = df.iloc[0:100, [0, 2]].values
-
-    # plt.savefig('images/02_06.png', dpi=300)
-    plt.show()
-
-    ppn = Perceptron(eta=0.1, n_iter=10)
-
-    ppn.fit(X, y)
-
-
-__main__()
+plot_decision_regions(X=X_cobined_std, y=y_combined, classifier=ppn)
+plt.xlabel(wine['feature_names'][a]+'std')
+plt.ylabel(wine['feature_names'][b])
+plt.legend(loc='upper left')
+plt.tight_layout()
+plt.show()
