@@ -9,8 +9,8 @@ df = pd.DataFrame(wine['data'], columns=wine['feature_names'])
 df['target'] = wine['target']
 df.head()
 
-a = 5
-b = 0
+a = 10
+b = 6
 
 X = wine.data[:, [a, b]]
 y = wine.target
@@ -63,6 +63,35 @@ X_cobined_std = np.vstack((X_train_std, X_test_std))
 y_combined = np.hstack((y_train, y_test))
 
 plot_decision_regions(X=X_cobined_std, y=y_combined, classifier=ppn)
+plt.xlabel(wine['feature_names'][a]+'std')
+plt.ylabel(wine['feature_names'][b])
+plt.legend(loc='upper left')
+plt.tight_layout()
+plt.show()
+
+
+'''
+여기까지 로지스틱 회귀
+이상치에 민감해서 할 때마다 다르게 나오는 듯
+아래부터는 SVM학습
+'''
+
+# from sklearn.svm import SVC
+#
+# svm=SVC(kernel='linear', C=1.0)
+# svm.fit(X_train_std, y_train)
+#
+# plot_decision_regions(X_cobined_std, y_combined, classifier=svm)
+# plt.xlabel(wine['feature_names'][a]+'std')
+# plt.ylabel(wine['feature_names'][b])
+# plt.legend(loc='upper left')
+# plt.tight_layout()
+# plt.show()
+
+svm = SVC(kernel='rbf', gamma=100, C=10.0)
+svm.fit(X_train_std, y_train)
+
+plot_decision_regions(X_cobined_std, y_combined, classifier=svm)
 plt.xlabel(wine['feature_names'][a]+'std')
 plt.ylabel(wine['feature_names'][b])
 plt.legend(loc='upper left')
