@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        
+        <script>
+            window.onload = function(){
+                let body = document.querySelector('body');
+            body.innerHTML = '<h1>큰글씨</h1>\
+                            <h2>작은글씨</h2>';
+            body.innerHTML += '<p>글자</p>'
+            body.innerHTML += '<a href="http://www.naver.com">네이버</a>'
+            body.innerHTML += '<table border=1>\
+                                <tr>\
+                                    <th> 제목 </th>\
+                                    <th> 제목1 </th>\
+                                </tr>\
+                                <tr>\
+                                    <td> 내용 </td>\
+                                    <td bgcolor="yellow"> 내용 </td>\
+                                </tr>\
+                            </table>'
+
+            document.querySelector('h1').style.fontSize = '20pt'
+            document.querySelector('h1').style.backgroundColor = 'red'
+
+            document.querySelector('h2').style.fontSize = '15pt'
+            document.querySelector('h2').style.backgroundColor = 'blue'
+
+            document.querySelector('a').style.backgroundColor = 'greeen'
+
+
+        }
+            
+        </script>
+    </head>
+    <body>
+        
+    </body>
+</html>

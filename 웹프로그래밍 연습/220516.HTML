@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>타이틀</title>
+        <script>
+            window.onload = function(){
+                let output = '';
+                output += '<h1>HEAD H1</h1>';
+                output += '<h2>HEAD H2</h2>';
+                output += '<p>TEXT TEXT</p>';
+                output += '<a href="http://www.naver.com">LINK ==>> NAVER</a>'
+                output += '<table border=1>\
+                                <th> 제목 </th>\
+                                <th> 제목1 </th>\
+                                <tr>\
+                                    <td> 내용 </td>\
+                                    <td bgcolor="yellow"> 내용 </td>\
+                                </tr>\
+                            </table>'
+                document.body.innerHTML += output
+           }
+           window.addEventListener('load', function(){
+
+            let h1 = document.querySelector('h1');
+            let h2 = document.querySelector('h2');
+            let p = document.querySelector('p');
+            let a = document.querySelector('a');
+            let table = document.querySelector('table');
+
+            h1.style.backgroundColor = 'red'
+            h1.style.fontSize = '30pt'
+
+            h2.style.backgroundColor = 'blue'
+            h2.style.fontSize = '15pt'
+
+            p.textContent = "뭔가의텍스트"
+            p.style.fontSize = '12pt'
+
+            a.style.backgroundColor = 'green'
+            a.style.textDecoration = 'None'
+            a.style.color = 'white'
+            a.style.fontSize = '15pt'
+            
+
+
+           });
+              
+        </script>
+    </head>
+    <body>
+        
+
+    </body>
+</html>

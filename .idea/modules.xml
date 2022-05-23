@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/Algorithm-Study-2022-spring.iml" filepath="$PROJECT_DIR$/.idea/Algorithm-Study-2022-spring.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/Machine-Learning-Study_2022_spring.iml" filepath="$PROJECT_DIR$/.idea/Machine-Learning-Study_2022_spring.iml" />
+>>>>>>> 7ba76dfa9561980cdd1b3d82f60e1b2dfff45216
     </modules>
   </component>
 </project>
